@@ -5,20 +5,70 @@
  * It contains typing information for all components that exist in this project.
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
+import { CarouselItem, Item } from "./models/carousel/carousel.model";
 export namespace Components {
+    interface CarouselContainer {
+        "autoPlayInterval"?: number;
+        "items": Array<CarouselItem>;
+        "showNavButtons": boolean;
+        "showNavDots": boolean;
+        "showStopStartButton": boolean;
+    }
+    interface CarouselItem {
+        "selectedItem": Item;
+    }
+}
+export interface CarouselContainerCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLCarouselContainerElement;
+}
+export interface CarouselItemCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLCarouselItemElement;
 }
 declare global {
+    interface HTMLCarouselContainerElement extends Components.CarouselContainer, HTMLStencilElement {
+    }
+    var HTMLCarouselContainerElement: {
+        prototype: HTMLCarouselContainerElement;
+        new (): HTMLCarouselContainerElement;
+    };
+    interface HTMLCarouselItemElement extends Components.CarouselItem, HTMLStencilElement {
+    }
+    var HTMLCarouselItemElement: {
+        prototype: HTMLCarouselItemElement;
+        new (): HTMLCarouselItemElement;
+    };
     interface HTMLElementTagNameMap {
+        "carousel-container": HTMLCarouselContainerElement;
+        "carousel-item": HTMLCarouselItemElement;
     }
 }
 declare namespace LocalJSX {
+    interface CarouselContainer {
+        "autoPlayInterval"?: number;
+        "items": Array<CarouselItem>;
+        "onClickDotButton"?: (event: CarouselContainerCustomEvent<CarouselItem>) => void;
+        "onClickNextPrevButton"?: (event: CarouselContainerCustomEvent<{type: string, item: CarouselItem}>) => void;
+        "showNavButtons"?: boolean;
+        "showNavDots"?: boolean;
+        "showStopStartButton"?: boolean;
+    }
+    interface CarouselItem {
+        "onClickImage"?: (event: CarouselItemCustomEvent<void>) => void;
+        "selectedItem"?: Item;
+    }
     interface IntrinsicElements {
+        "carousel-container": CarouselContainer;
+        "carousel-item": CarouselItem;
     }
 }
 export { LocalJSX as JSX };
 declare module "@stencil/core" {
     export namespace JSX {
         interface IntrinsicElements {
+            "carousel-container": LocalJSX.CarouselContainer & JSXBase.HTMLAttributes<HTMLCarouselContainerElement>;
+            "carousel-item": LocalJSX.CarouselItem & JSXBase.HTMLAttributes<HTMLCarouselItemElement>;
         }
     }
 }
