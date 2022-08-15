@@ -29,6 +29,7 @@
     "@stencil/core": "^2.13.0"
   },
   "devDependencies": {
+    "@stencil/angular-output-target": "^0.4.0",
     "@stencil/sass": "^1.5.2",
     "@types/jest": "^27.0.3",
     "jest": "^27.4.5",
